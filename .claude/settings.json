@@ -9,7 +9,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8')); const p=(d.tool_input&&d.tool_input.file_path)||''; process.exit(p.includes('.env')?2:0);\""
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8'));const p=((d.tool_input&&d.tool_input.file_path)||'').split(/[\\\\/]/).pop();process.exit(/^\\.env(\\..+)?$/.test(p)&&!/^\\.env\\.(example|sample)$/.test(p)?2:0);\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8'));const c=(d.tool_input&&d.tool_input.command)||'';process.exit(/\\.env(?![\\w-]|\\.(example|sample)\\b)/.test(c)?2:0);\""
           }
         ]
       }

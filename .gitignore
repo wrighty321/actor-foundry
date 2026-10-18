@@ -17,3 +17,6 @@ Thumbs.db
 *.pfx
 credentials.json
 service-account*.json
+
+# Obsidian per-machine config (the wiki/ folder is opened as an Obsidian vault)
+.obsidian/

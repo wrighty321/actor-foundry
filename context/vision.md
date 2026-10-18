@@ -74,6 +74,17 @@ frozen intent and the living state, this holds the reasoning between them.
   existing actors do and why they succeed or fail. The human ruling before build stands. Judged
   by: whether the bank's first gap list produces actor #1 at all, and whether the time it costs
   comes out of milestones 1–3.
+- **Two research agents and emerging-site research brought forward (2026-10-18, same day).**
+  The bank was widened into an Obsidian wiki (`wiki/`) that teaches the builder how and why to
+  build, and a separate target research agent now finds what to build — niche, underserved and
+  emerging sites — ahead of actor #1. This brings forward the watcher's job, which the Kun pass
+  and the user's own earlier ruling had deferred until two actors earn. Kept from the earlier
+  reasoning: demand selects and growth only adjusts a score; the human ruling sits between the
+  agent and the builder; Grok Bot's X feed stays deferred. Judged by: whether actor #1 comes
+  from an approved target-agent candidate; whether the rulings log shows the agent's calls
+  converging on the user's; whether milestone 1 still meets its 2026-11-15 slip date with
+  1b and 1c running; and the existing falsification guardrail on rising sites, which now
+  applies from actor #1 rather than actor #3.
 
 ## Dates & tripwires
 - **2027-01-31** — kill criterion: no paid run by a stranger, abandon or pivot (frozen in
@@ -111,6 +122,8 @@ frozen intent and the living state, this holds the reasoning between them.
 | Pay-per-event prices clear platform cost | Milestone 2 publish-day analytics; weekly thereafter |
 | The Store surfaces new actors at all | Milestone 2 and 3, 30-day user counts |
 | Grok Bot can run a read-only routine with no repo credentials | Milestone 5 |
+| A research agent can find candidates the user approves without heavy rewriting | Milestone 1c, counted in `wiki/candidates/rulings-log.md` |
+| Patterns from Store data hold on our own actors | Milestones 2 and 3, claims promoted from observed to confirmed in `wiki/` |
 | The builder handles roughly half of candidates unaided | Milestones 2 and 3, counted |
 
 ## Standing state at decision time
