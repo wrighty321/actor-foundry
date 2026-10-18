@@ -1,5 +1,6 @@
 # 003 — Pause mechanism: a kill-switch record the actor reads first, plus a flagged description
-Status: accepted — 2026-10-18, by the user
+Status: superseded by 012 — 2026-10-18 (was accepted 2026-10-18, by the user)
+Superseded by 012 on 2026-10-18 (the kill-switch record, exit codes and read-back carry forward; the automatic `description` write does not). Un-pause gate superseded by 010.
 
 ## Context
 - Ruled 2026-10-18: an actor the maintainer cannot repair is paused with a status message,

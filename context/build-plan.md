@@ -132,3 +132,154 @@ literal word `[[wikilinks]]` inside a code span in the README, not a link). Pass
   paragraph — historical text; left as written.
 - Discarded: buyer-supplied fixtures as the order; the maintainer loop as a service to other
   developers — both cross the brief's boundary condition.
+
+## Stage U2 — Kun pass on the architecture, 2026-10-18
+
+Source: an independent review of `context/architecture.md` and ADRs 001–008 with Kun Chen's
+opinion map as the lens, 2026-10-18. Five Must and twelve Should proposals; integrated at the
+user's instruction. Reversals of accepted decisions are new ADRs (009–013, `proposed`); the
+accepted ADRs carry a status amendment line and are otherwise untouched. Planning items are
+done here; code items are **elsewhere** and listed with their `verify-by` for the build session.
+
+### U2.1 — In-actor preflight and page-buffered charging (M1 · inspected)
+- accepts: ADR 009 exists; `fixture.md` gains `min_complete_share`; B22 states the run order;
+  exit code 12 is reserved; the check counts exit-12 runs.
+- verify-by (elsewhere): a fake `Actor` test shows zero `push_data` calls when the preflight
+  fails or a page is below `min_complete_share`; on the stub, a deliberately broken live page
+  ends a run with exit 12 and zero charges.
+- evidence: ADR 009, architecture.md C2 and failure rows, B22 written.
+- status: done here; test and stub run elsewhere
+
+### U2.2 — Repair, fixture re-approval, un-pause gate (M2 · observed)
+- accepts: ADR 010 exists; the `repair_id` gate is gone; deploy un-pauses only on
+  `status: approved` with `approved_on` on or after the repair commit; B3 names the draft rule.
+- verify-by (elsewhere): a merged repair with a `draft` fixture leaves the actor paused and
+  sends exactly one "fixture needs your approval" line.
+- evidence: contradiction traced — ADR 003's record never gained a `repair_id`, ADR 001 gave
+  the repair job no Apify token, and ADR 002's L1 cannot pass after a real site change without
+  a fixture change only the user may make. ADR 010, B3, architecture.md updated.
+- status: done here; deploy behaviour elsewhere
+
+### U2.3 — Branch rules, deploy guard, agent PRs and trailers (M3, S10 · observed)
+- accepts: ADR 011 exists; the deploy job runs only when the push actor is the user; routines
+  and the repair job open PRs; agent commits carry `Agent:` and `Run:` trailers; a ruleset
+  requires PRs on `main` with the Actions app bypassed.
+- verify-by (elsewhere, operator step): the repository's rulesets list the rule; a test commit
+  under `actors/**` pushed by the Actions bot produces no deploy run; a log commit from the
+  check lands.
+- evidence: ADR 011; architecture.md triggers and C10/C11 rows; wiki README; CLAUDE.md bullet.
+  GitHub docs on ruleset bypass lists and the push actor on UI merges were read by the reviewer
+  on 2026-10-18 (documented, not yet exercised on this repo).
+- status: done here; ruleset creation is the user's step
+
+### U2.4 — Store pull reconciliation (M4 · observed)
+- accepts: the snapshot header carries `totals_seen`, `pages`, `items_received`,
+  `unique_ids`, `previous_unique_ids`; the pull reconciles on unique ids, never on the
+  envelope; a partial pull writes nothing.
+- verify-by (elsewhere): a committed Store page with `count` greater than its items makes the
+  old rule pass and the new rule fail; the first real pull's header numbers add up.
+- evidence: reproduced here 2026-10-18 — `GET /v2/store?limit=1000&offset=0` twice: envelope
+  `total 90920, count 1000`, **948 items** each time, identical id sets; `limit=100&offset=500`:
+  `count 100`, **93 items**. architecture.md §Snapshot, wiki README, plan row 1b and a risk
+  row updated; ADR 007's status note corrects its offline-testability consequence.
+- status: done here; test elsewhere
+
+### U2.5 — One secrets inventory; the repair PR carries its own L1/L2 (M5 · observed)
+- accepts: `.env.example` is the single inventory and names each workflow's set; CLAUDE.md
+  and the ADRs point at it; the repair job (when built) writes L1/L2 and the run URL into the
+  PR body and sends the Telegram line itself.
+- verify-by: a grep for the OAuth token name shows one inventory and pointers, no second list.
+- evidence: three files disagreed on C5's secrets (ADR 001, the secrets example, architecture.md);
+  bot-opened PRs do not get automatic `pull_request` runs (GitHub docs, reviewer's read
+  2026-10-18). Files rewritten.
+- status: done
+
+### U2.6 — Status page, loud exit, off-hour cron (S1 · inspected)
+- accepts: ADR 013 §5; `maintainer/STATUS.md` shape in architecture.md; the check exits
+  non-zero on anything awaiting a human; crons off the hour.
+- verify-by (elsewhere): a deliberately broken fixture produces a GitHub failure e-mail the
+  same morning; `STATUS.md`'s mtime equals the last run.
+- status: done here
+
+### U2.7 — Pause as kill switch only; scoped token for the check (S2 · documented, carried as assumed)
+- accepts: ADR 012 supersedes 003; `APIFY_TOKEN_SCOPED` is in the inventory; `foundry flag` /
+  `unflag` are manual with a restore guard.
+- verify-by (elsewhere): the scoped token lists the stub's runs and writes the control store;
+  the daily workflow holds no unscoped Apify token.
+- evidence: the scoped-token capability is the reviewer's read of Apify's integrations docs
+  (2026-10-18); the page failed to fetch twice from this session, so ADR 012 carries it as
+  assumed until the token is created.
+- status: done here; token elsewhere
+
+### U2.8 — Notifications merged into the check (S3 · inspected)
+- accepts: no separate notify workflow; C12 retired in architecture.md; the check sends
+  candidate pings and the Monday summary.
+- status: done
+
+### U2.9 — Repair workflow deferred; local `foundry repair` (S4 · inspected)
+- accepts: ADR 013 §1; ADR 001 status note; `foundry repair` in the CLI list; plan row 1 and
+  the order row say so.
+- status: done
+
+### U2.10 — Target research on demand, cap two (S5 · inspected)
+- accepts: ADR 013 §2; wiki README and plan row 1c say on demand until actor #1 is approved.
+- status: done
+
+### U2.11 — `store-gaps` table generated by the pull (S6 · observed)
+- accepts: ADR 013 §3; architecture.md "Store-gaps table"; plan row 1b; wiki README.
+- evidence: 1b required a graded entry that nothing in 1b could write (synthesis is 1d).
+- status: done here; generator elsewhere
+
+### U2.12 — L2 runs as an Apify run of the deployed build (S7 · inspected)
+- accepts: architecture.md C4 row and ADR 002's status note say so; CU is read from that run.
+- status: done
+
+### U2.13 — Listing-change gate grammar (S8 · observed)
+- accepts: the `decisions.md` line must carry the PR number; architecture.md "Deploy gate
+  grammar"; ADR 004's status note; CLAUDE.md.
+- evidence: "a line dated on or before the merge" was always true (the file already had 25).
+- status: done
+
+### U2.14 — Third-party text cannot reach the builder's instructions (S9 · inspected)
+- accepts: B20 (named sections of the note are the brief), B21 (reasons from field names and
+  codes only), `routines/*.md` reviewed like `.github/` (architecture.md hard constraints).
+- status: done
+
+### U2.15 — Control-before-charge as a committed test; test authority labelled (S11 · inspected)
+- accepts: architecture.md's verification posture separates tests with the user's authority
+  from implementer tests and names the call-order test.
+- verify-by (elsewhere): the test exists and fails when the order is swapped.
+- status: done here
+
+### U2.16 — Price read-back on deploy (S12 · inspected)
+- accepts: deploy reads `pricingInfos` and compares with the README's per-1k line; a mismatch
+  is a Telegram line.
+- status: done here; behaviour elsewhere
+
+### Integration check
+13 ADR files numbered 001–013 with no collisions; each has a `Status` line, four sections and
+at least one rejected alternative with a reason; 003 reads `superseded by 012`; the amended
+ADRs carry a status note and unchanged bodies. architecture.md references only ADRs that
+exist; no separate notify workflow, `original_description` field or `repair_id` gate remains
+outside the superseded ADR and this stage's text. Result recorded below.
+
+Result, 2026-10-18: 13 ADR files 001–013, no duplicate numbers; every file has a `Status`
+line, 4/4 sections and 2–6 rejected alternatives; 003 reads `superseded by 012`; the seven
+amended ADRs carry a status note and unchanged bodies (their original `notify.yml` and
+`repair_id` sentences remain, as append-only requires, and are the only such hits besides the
+new ADRs that describe what they supersede). architecture.md references all 13 and no
+missing file; 15 components in its table, C1 (library) and C12 (retired) deliberately absent
+from the diagram; 15 wiki pages, every link resolves. Passed.
+
+### Deferred (from the review; parking reasons)
+- Retire C7 if every pause over milestone 4 came from a preflight the actor already enforces —
+  decided on that evidence (would supersede ADR 012).
+- Trim the empty `wiki/synthesis/` pages until the second snapshot — kept: they are the
+  designed empty state and cost nothing; revisit at 1d.
+- The freshness-receipt bet (B1) costs one KV write once the preflight exists — folded into
+  ADR 009's consequences.
+- Batch `push_data` per page — folded into ADR 009 (`push_rows`).
+- `.gitattributes` eol — with the first `.github/` PR.
+- Path-restricted push rulesets — checked when the ruleset is created; would replace the bypass.
+- GitHub mobile support for `workflow_dispatch` and the "Approve workflows" banner — unverified;
+  irrelevant while repair runs locally.

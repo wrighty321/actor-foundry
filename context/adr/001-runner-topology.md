@@ -1,5 +1,6 @@
 # 001 — Runner topology: a deterministic daily check, a separate manual repair workflow
 Status: accepted — 2026-10-18, by the user
+Amended 2026-10-18: C5's timing by 013 (end state unchanged); the repair job computes L1/L2 in-job and writes them into the PR body, since bot-opened PRs do not get automatic workflow runs (architecture.md).
 
 ## Context
 - The maintainer must run every day whether or not this machine is on. In-app scheduled tasks

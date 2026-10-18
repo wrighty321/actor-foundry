@@ -1,5 +1,6 @@
 # 002 — Fixture semantics and format: two layers, user-marked anchors, approval in frontmatter
 Status: accepted — 2026-10-18, by the user
+Amended 2026-10-18: re-approval after a repair by 010; L2 reused as an in-actor preflight and the `min_complete_share` field by 009; L2's fetch runs as an Apify run of the deployed build (architecture.md).
 
 ## Context
 - The fixture is the definition of "working". The brief names silently wrong rows as the

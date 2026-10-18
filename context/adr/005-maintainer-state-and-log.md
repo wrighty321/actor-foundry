@@ -1,5 +1,6 @@
 # 005 — Maintainer state and log: runtime state in the control store, the run log in the repo
 Status: accepted — 2026-10-18, by the user
+Amended 2026-10-18: `maintainer/STATUS.md` and the non-zero exit by 013.
 
 ## Context
 - The brief's "done" needs one log entry per maintainer run, 7 then 30 consecutive days,
