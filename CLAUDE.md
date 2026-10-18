@@ -14,4 +14,5 @@
 - `context/commitments.md` — frozen viability thesis & kill criteria.
 - `context/vision.md` — why this route, rejected alternatives, tripwires, success gates (read before any directional change).
 - `context/decisions.md` — decision log, maintained by /consolidate.
+- `context/research-2026-10-18.md` — Apify platform facts, Store gap-check heuristics, watcher feeds, Grok Bot facts, each dated (read before milestone 2 target selection or any pricing).
 - Vault (cross-repo substrate): `C:\Users\Alexc\Vault\` — read its `agents.md` only before writing there.

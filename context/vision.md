@@ -105,7 +105,8 @@ frozen intent and the living state, this holds the reasoning between them.
   first build is the walkthrough the brief could not record.
 - Signal (`wrighty321/signal`), a scheduled LLM research-delivery pipeline in Python, is the
   nearest existing system and the reason the stack is Python.
-- Grok Bot facts are saved in `random`'s memory (`grok-bot-capabilities.md`); the Kun clone was
-  read from a session scratchpad and is not kept.
+- Grok Bot facts and the Apify platform facts are in `context/research-2026-10-18.md` (also
+  mirrored as `random`'s memory `grok-bot-capabilities.md`); the Kun clone was read from a
+  session scratchpad and is not kept.
 - Telos (`vault/telos.md`, reviewed 2026-08-31): P12 is the only problem; the commercial chain
   X13 is retired; R2 governs this as tinkering; R7 keeps publishing human-approved.
