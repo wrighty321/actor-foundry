@@ -6,7 +6,17 @@
 - Every actor has a fixture under `actors/<name>/fixture/` that the user authored or approved. The builder never writes an actor's tests; the maintainer never publishes a change the fixture did not pass.
 - No `apify push` to a public listing without a dated ruling in `context/decisions.md` and a PR that passed an adversarial review in a separate session.
 - The Apify token lives in `.env` here and is never placed on the Grok Bot computer; the watcher is read-only.
-- In-app scheduled tasks fire only while the app is open — the maintainer's runner is GitHub Actions cron or an always-on machine, decided in milestone 1.
+- The maintainer runs on **GitHub Actions cron** (ruled 2026-10-18); in-app scheduled tasks fire only while the app is open and are not a runner. The Apify token and Telegram secrets are repository secrets there, nowhere else.
+- Maintainer hard limits: never publishes, never changes a price, never touches another actor's fixture, never exceeds 1 compute unit per run (default until measured). An actor it cannot repair is **paused with a status message** — never left running broken, never unpublished.
+- Escalations and ruling requests go to **Telegram**; the user reviews same day. A weekly Telegram summary covers profit per actor, runs, repairs and escalations. Escalation classes are a trust ladder: automate one only after it has matched the user's ruling 10 consecutive times (telos R5).
+- A ruling request for a candidate site shows: the plain-fetch result, the terms-of-service line, the data class and lawful basis, the Store gap evidence, and a price with the compute estimate behind it. A publish request shows the fixture passing and a sample of real output against what the candidate request promised.
+- Fixtures are **builder-proposed, user-approved**: the builder drafts expected rows from a page the user chose; nothing counts as a fixture until the user approves it.
+- Actors are **open source** and **priced to undercut** the incumbent actor for the same data; the reliability claim is what the price is not.
+- Public professional data (names, job titles, work emails) is an allowed target; private and sensitive data are not (ruled 2026-10-18, narrowing the brief's blanket exclusion). English-language sites only for now.
+- Python: `uv` for environments and locking, `pytest`, `ruff` (format and lint); type hints on public functions, plain functions over class hierarchies, async only where the Apify SDK requires it.
+
+## Key files
+- `bank/` — the actor intelligence bank: `snapshots/` is the source of truth, `actors/` and `patterns/` are generated from it, `gaps.md` feeds ruling requests. Read `bank/README.md` before touching it; read `bank/patterns/` before drafting any actor.
 
 ## Context (read on demand — deliberately not loaded here)
 - `context/project-brief.md` — frozen goal & scope (drift anchor).

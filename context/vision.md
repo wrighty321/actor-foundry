@@ -62,6 +62,19 @@ frozen intent and the living state, this holds the reasoning between them.
   loop; the user kept it as milestone 5, gated on two actors earning. Judged by: whether the
   shortlist it produces ever becomes a shipped actor that pays.
 
+- **Narrowing the personal-data exclusion (interview, 2026-10-18).** The brief excludes
+  personal data outright; the user ruled that too strict and allowed public professional data
+  (names, job titles, work emails). The legal flag (UK GDPR still applies to public data) was
+  raised once and accepted. Judged by: whether any takedown or complaint arrives on a published
+  actor, and whether the lawful-basis line in each ruling request ever turns out to be
+  unwritable for a candidate.
+- **Reinstating a research routine for target selection (interview, 2026-10-18).** The Kun
+  pass had the human pick targets by hand with a Store gap check; the user has no sites in mind
+  and wants selection grounded in a competitor assessment and a self-updating bank of what
+  existing actors do and why they succeed or fail. The human ruling before build stands. Judged
+  by: whether the bank's first gap list produces actor #1 at all, and whether the time it costs
+  comes out of milestones 1–3.
+
 ## Dates & tripwires
 - **2027-01-31** — kill criterion: no paid run by a stranger, abandon or pivot (frozen in
   `commitments.md`).
