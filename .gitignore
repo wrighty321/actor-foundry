@@ -1,0 +1,19 @@
+# Personal / local overrides — not shared with the team
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit. .env.example stays tracked (names only, no values).
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json

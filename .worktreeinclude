@@ -1,0 +1,5 @@
+# Gitignored files/patterns that should still be copied into new git worktrees
+# (e.g. via `git worktree add`), one pattern per line, same syntax as .gitignore.
+# Common candidates:
+# .env
+# .env.local
