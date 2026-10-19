@@ -1,0 +1,19 @@
+# .os/tools.yaml — the command surfaces an agent body may use (ADR 016). Anything not listed is
+# denied to an agent; the interim sequencer passes this list to each fresh session.
+allowed:
+  - uv run foundry lint
+  - uv run foundry pull
+  - uv run foundry check <actor>        # read-only when run by an agent (no pause)
+  - uv run pytest
+  - uv run ruff check . ; uv run ruff format --check .
+  - git status / diff / log / checkout -b / add / commit (with the five trailers) / push <branch>
+  - gh pr create / gh pr view / gh pr list
+  - curl GET https://api.apify.com/v2/store, /v2/acts/{id}, /v2/acts/{id}/builds/default   # public reads
+  - web reads through the harness's fetch tool, fenced as data
+never:
+  - apify push                           # the deploy workflow only
+  - any write to main                    # PRs only (ADR 011)
+  - uv run foundry pause | unpause | flag | unflag | deploy
+  - reading or printing any secret file or environment variable
+  - editing any file under wiki/playbook/, library/, .github/, .os/, context/adr/ except by PR
+  - editing its own body, lens or tests  # agents never write their own files (OS rule)

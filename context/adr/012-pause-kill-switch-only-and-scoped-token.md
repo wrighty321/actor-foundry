@@ -1,6 +1,7 @@
 # 012 — Pause: kill switch only, with a scoped token in the daily check
 Status: accepted — 2026-10-18, by the user (proposed the same day by the Kun pass on the architecture)
 Supersedes: 003 (its kill-switch record, exit codes and read-back are carried forward unchanged)
+Amended 2026-10-18: the pause trigger is narrowed by 015 — an L2 failure confined to the preflight page is escalated, not paused; the record, exit codes, read-back and scoped token stand.
 
 ## Context
 - ADR 003 paused by writing the control record **and** prefixing the actor's `description`

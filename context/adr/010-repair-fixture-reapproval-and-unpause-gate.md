@@ -1,6 +1,7 @@
 # 010 — Repair, fixture re-approval and the un-pause gate
 Status: accepted — 2026-10-18, by the user (proposed the same day by the Kun pass on the architecture)
 Supersedes: the un-pause gate of 003 and 004 (`paused` with a `repair_id`); adds to 002 and B3
+Amended 2026-10-18: the fixture draft may be approved on the PR branch so one merge deploys and un-pauses — the fast path (015).
 
 ## Context
 - ADR 002's L1 compares `extract(source/*)` with `expected.jsonl` on pages saved at approval

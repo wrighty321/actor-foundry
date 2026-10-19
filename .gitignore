@@ -20,3 +20,6 @@ service-account*.json
 
 # Obsidian per-machine config (the wiki/ folder is opened as an Obsidian vault)
 .obsidian/
+
+# OS interim run state (briefs, receipts, leases) — never committed (ADR 016)
+.os/runs/

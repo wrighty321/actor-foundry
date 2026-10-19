@@ -38,7 +38,7 @@ live actors (maintainer log, Actor analytics, reviews, issues) ──> first-par
 | `playbook/` | The builder's rules: [[build-checklist]], [[candidate-card]]. | **PR only, user approves** | Executable — never auto-written |
 | `candidates/<slug>.md` | One candidate per note, built from [[candidate-card]]. | Target research agent; you edit | Agent proposes by pull request (ADR 011); you merge to land, then set `status:` and edit freely |
 | `candidates/rulings-log.md` | The agent's four sub-scores and total against your ruling, per candidate. | The session that records the ruling | Append-only |
-| `first-party/<actor>.md` | What our own live actors show: profit, users, failures, repairs, reviews, issues. | Maintainer weekly summary, synthesis | Append-only stats; prose re-synthesised |
+| `first-party/<actor>.md` | What our own live actors show: one Console Monday row per week (`date, score, notice, open issues, new reviews, profit, note`, ADR 015) plus the maintainer's counts; the only instrument for the quality score. | You (Console Monday), the maintainer summary, synthesis | Append-only rows; prose re-synthesised |
 
 ### The inert / executable split
 `evidence/`, `synthesis/`, `candidates/` and `first-party/` record state; agents write them
@@ -109,8 +109,13 @@ repeated calls — so the pull reconciles on unique ids received against the tot
 the pull and against the previous snapshot's id count, writes `totals_seen`, `pages`,
 `items_received` and `unique_ids` into the snapshot header, and writes nothing if either test
 fails. The same run generates [[store-gaps]]'s ranked table from snapshot fields (ADR 013).
+It passes `includeUnrunnableActors=true` so the weak sample sees the actors default search
+hides (full-permission actors without a user base, developers without KYC), records the exact
+query parameters in the header so totals are comparable, records each item's `badge` (Apify's
+`risingStar`), and finds deprecated actors — which the list no longer returns — by diffing ids
+against the previous snapshot and reading `isDeprecated` from `/acts/{id}` (ADR 015).
 
-### Monthly synthesis — Claude cloud routine; fallback `/wiki-refresh` run by hand (skill not yet written)
+### Monthly synthesis — `library/wf.foundry.wiki-synthesis/`, run by the interim sequencer on a cloud routine or by hand
 Reads the newest snapshot against the previous one, writes each actor's "why it works / why it
 doesn't", re-synthesises every `synthesis/` page, fills the prose grade on [[store-gaps]]'s
 rows, and proposes playbook changes when a finding should change how actors are built. Every
@@ -131,11 +136,13 @@ funnel and paid-user numbers exist only for our own actors, from Apify Actor ana
 
 ## Target research agent
 
-A Claude cloud routine, run on demand and capped at two notes per run until actor #1 has
-`status: approved`, weekly with a cap of five after that (ADR 013). It opens a pull request
-adding the notes under `candidates/` from the [[candidate-card]] template (ADR 011); the
-maintainer's daily check pings Telegram with each new note's slug, one-line pitch and score
-and the line "merge to land, close to discard".
+The workflow `library/wf.foundry.target-research/` — reader, scout, writer, finisher in the
+personal OS shape (ADR 016) — run on demand through `uv run foundry run-workflow` and capped at
+two notes per run until actor #1 has `status: approved`, weekly with a cap of five after that
+(ADR 013). It opens a pull request adding the notes under `candidates/`, each validated against
+`library/contracts/ct.foundry.candidate@1.schema.json` (ADR 011, 016); the maintainer's daily
+check pings Telegram with each new note's slug, one-line pitch and score and the line "merge to
+land, close to discard".
 
 Sources:
 - **Store-side gaps** — [[store-gaps]].
@@ -178,6 +185,10 @@ price: <per-event price on the FREE buyer tier, e.g. "$2.50 / 1k results (FREE t
 notice: NONE | RESIDENTIAL_PROXY_REQUIRED | UNDER_MAINTENANCE
 permission: limited | full                  # actorPermissionLevel
 agentic_payments: yes | no                  # isWhiteListedForAgenticPayments
+deprecated: yes | no                        # isDeprecated, found by id diff
+badge: none | risingStar
+created: YYYY-MM-DD                         # createdAt
+modified: YYYY-MM-DD                        # modifiedAt — Apify reads recent changes as active maintenance
 first_seen: YYYY-MM-DD
 last_seen: YYYY-MM-DD
 ---

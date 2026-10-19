@@ -27,6 +27,14 @@ Growth adjusts a score; it never selects a candidate.
 | Fetch | 0 to −3 | 0 all three pages return the data to a plain fetch · −1 the data needs a browser (more compute) · −3 any anti-bot challenge (Cloudflare, DataDome): the price must assume residential proxies, and most such candidates will not clear cost |
 | **Total** | | Base + Growth + Fetch |
 
+**Saturation is a gate, not a score.** The agent counts the actors in the current snapshot whose
+title or name names the target site (a hand count read from titles — never the Store
+`search=` total, which matches README text and puts every real query in the 50+ band: 3,240
+for "google maps", 2,023 for "linkedin jobs", 502 for "planning applications" on 2026-10-18).
+Bands, from Apify's own guidance: 1–5 unproven, 10–30 healthy, 50+ saturated. In the unproven
+band a candidate is sent only with Demand ≥ 2: Base already requires demand, and an empty niche
+is weak evidence of it.
+
 These weights are the starting point. They change only on evidence from
 `../candidates/rulings-log.md`, through a pull request to this page.
 
@@ -46,6 +54,10 @@ score_growth: 0
 score_fetch: 0
 score_total: 0
 flags: []               # e.g. [terms-forbid-scraping, public-professional-data]
+saturation_count: 0     # snapshot actors whose title names the site (hand count)
+saturation_band:        # unproven (1–5) | healthy (10–30) | saturated (50+)
+proposed_title:         # 40–50 chars, "{Site} {Service} Scraper", platform name first
+proposed_slug:          # fixed before publish
 ruling:                 # the date of the decisions.md line, once recorded
 ---
 
@@ -56,10 +68,15 @@ The data, in one or two sentences, and the search a buyer would type to look for
 Each signal with its link and the date it was read.
 
 ## Store gap evidence
-Best existing actor (link to its page under evidence/actors/), its 30-day success rate,
-rating, review count, notice, permission level, agentic-payments flag and price on the FREE
-buyer tier (incumbents price per buyer plan; name the tier) — or "no actor", with the Store
-searches tried.
+Best existing actor (link to its page under evidence/actors/), its 30-day users, success rate,
+rating, review count, notice, `modifiedAt`, permission level, agentic-payments flag and price on
+the FREE buyer tier (incumbents price per buyer plan; name the tier) — or "no actor", with the
+Store searches tried. The saturation hand count and band, with the titles counted.
+
+## Proposed listing
+Title (40–50 characters, `{Site} {Service} Scraper`, the platform's name first because agents
+search by platform), slug, and a one-line description of at most 300 characters naming the
+fields returned. These become `listing.md` if the candidate is built.
 
 ## Growth signal
 Launch posts, rank readings with their dates, or "none".

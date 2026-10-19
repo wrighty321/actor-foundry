@@ -1,6 +1,7 @@
 # 007 — Research-agent runners: deterministic pull on Actions, model steps as cloud routines, notifications from Actions
 Status: accepted — 2026-10-18, by the user
 Amended 2026-10-18: notifications, target cadence and the `store-gaps` writer by 013; direct commits to `main` by 011 (routines open PRs); the consequence "testable offline against a saved Store page" is corrected in architecture.md §Snapshot — the live list's envelope `count` overstates the items returned.
+Amended 2026-10-18 (second): `routines/*.md` become workflow directories under `library/` in the OS shape, run by an interim sequencer until the OS registers them (016).
 
 ## Context
 - The weekly Store pull needs no model and no secret (every field verified public on

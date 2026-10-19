@@ -1,5 +1,6 @@
 # 006 — Repo layout: one monorepo, a shared `foundry` package, one directory per actor
 Status: accepted — 2026-10-18, by the user
+Amended 2026-10-18: the layout gains `library/` (OS-shaped workflow directories and contracts) and `.os/` (project truth); the shared package's deterministic steps are functions `fn.foundry.*@1` (016).
 
 ## Context
 - Every actor repeats the same first steps: read the control record (ADR 003), charge through

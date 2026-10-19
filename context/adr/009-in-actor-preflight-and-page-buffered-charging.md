@@ -1,6 +1,7 @@
 # 009 — In-actor preflight and page-buffered charging
 Status: accepted — 2026-10-18, by the user (proposed the same day by the Kun pass on the architecture)
 Adds to: 002 (reuses L2 inside the actor), 008 (charging per page, not per row)
+Amended 2026-10-18: `live_pages[0]` is also the input schema's `prefill` and `default`, so Apify's daily test runs the preflight page (014); an L2 failure confined to that page no longer pauses the actor (015).
 
 ## Context
 - The brief names silently wrong rows as the expensive case and expects the maintainer's

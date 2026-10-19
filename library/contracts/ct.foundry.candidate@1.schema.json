@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ct.foundry.candidate@1.schema.json",
+  "title": "Candidate note frontmatter (wiki/playbook/candidate-card.md). Producer: wf.foundry.target-research writer; consumers: the sequencer's contract check, the user, wf.foundry.build (named sections only, B20).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["candidate", "site", "status", "proposed", "score_demand", "score_gap", "score_base", "score_growth", "score_fetch", "score_total", "flags", "saturation_count", "saturation_band", "proposed_title", "proposed_slug", "sections"],
+  "properties": {
+    "candidate": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 60 },
+    "site": { "type": "string", "pattern": "^https://", "maxLength": 300 },
+    "status": { "enum": ["proposed", "changes-requested", "approved", "rejected", "parked"] },
+    "proposed": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "reviewed": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "score_demand": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "score_gap": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "score_base": { "type": "integer", "minimum": 1, "maximum": 9 },
+    "score_growth": { "type": "integer", "minimum": 0, "maximum": 2 },
+    "score_fetch": { "type": "integer", "minimum": -3, "maximum": 0 },
+    "score_total": { "type": "integer", "minimum": -2, "maximum": 11 },
+    "flags": {
+      "type": "array",
+      "items": { "enum": ["terms-forbid-scraping", "public-professional-data", "browser-required", "anti-bot-challenge", "data-class-unclear"] },
+      "uniqueItems": true
+    },
+    "saturation_count": { "type": "integer", "minimum": 0 },
+    "saturation_band": { "enum": ["unproven", "healthy", "saturated", "none"] },
+    "proposed_title": { "type": "string", "minLength": 40, "maxLength": 50 },
+    "proposed_slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 60 },
+    "ruling": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "sections": {
+      "description": "The body sections present, in order; the sequencer checks the list, the writer asserts it.",
+      "type": "array",
+      "items": { "enum": ["What a buyer wants", "Demand evidence", "Store gap evidence", "Proposed listing", "Growth signal", "Plain-fetch result", "Terms of service", "Data class and lawful basis", "Proposed output", "Price and compute estimate", "Suggested fixture page", "Risks", "Your changes"] },
+      "minItems": 13,
+      "maxItems": 13,
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "saturation_band": { "const": "unproven" } } },
+      "then": { "properties": { "score_demand": { "minimum": 2 } } }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+# .os/project.yaml — the machine-readable truth about this repo (ADR 016).
+# Read by /blueprint, the build session and, later, the personal OS's registry (pj. row).
+# One writer: a ruling, by a PR the user merges. Never edited by an agent body.
+id: pj.actor-foundry
+name: actor-foundry
+tier: venture
+repo: C:\Claude_Repositories\actor-foundry
+remote: https://github.com/wrighty321/actor-foundry
+language: python
+python: "3.12"
+package_manager: uv
+commands:
+  e2e: uv run pytest                      # the one end-to-end command (L1 for every actor + package tests)
+  lint: uv run ruff check . && uv run ruff format --check . && uv run foundry lint
+  check: uv run foundry check <actor>
+  deploy: uv run foundry deploy <actor>   # only the deploy workflow calls this
+  pull: uv run foundry pull
+  run_workflow: uv run foundry run-workflow <wf-id>
+  repair: uv run foundry repair <actor>   # local, until wf.foundry.repair exists
+areas:
+  foundry:     [foundry/**]
+  actors:      [actors/**]
+  fixtures:    [actors/*/fixture/**]
+  maintainer:  [maintainer/**]
+  wiki:        [wiki/**]
+  library:     [library/**]
+  workflows:   [.github/workflows/**]
+  context:     [context/**]
+protected_paths:                           # change only by a PR the user merges (ADR 011)
+  - wiki/playbook/**
+  - .github/**
+  - library/**
+  - actors/*/fixture/**
+  - context/adr/**
+  - .os/**
+agent_write_paths:                         # what a workflow may touch, by workflow id
+  wf.foundry.target-research: [wiki/candidates/**]
+  wf.foundry.wiki-synthesis:  [wiki/synthesis/**, wiki/evidence/actors/**, wiki/playbook/** (PR only)]
+  wf.foundry.build:           [actors/<name>/**]
+  wf.foundry.repair:          [actors/<name>/src/**, actors/<name>/fixture/** (draft only)]
+key_files:
+  - CLAUDE.md
+  - context/architecture.md
+  - context/build-plan.md
+  - wiki/README.md
+  - wiki/playbook/build-checklist.md
+  - wiki/playbook/candidate-card.md
+  - wiki/playbook/publish-runbook.md
+env_var_names: [APIFY_TOKEN, APIFY_TOKEN_SCOPED, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, CLAUDE_CODE_OAUTH_TOKEN]
+runners:
+  interim: [github-actions-cron, workflow_dispatch, claude-cloud-routine, local-claude-code-session]
+  target: personal-os registry schedule -> shell   # not before 2026-11-11 (ADR 016)
+contracts_dir: library/contracts
+trailers: [Model, Brief, Tokens, Session, Approval]   # on every agent-made commit; never a co-author line

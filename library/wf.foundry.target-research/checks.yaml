@@ -1,0 +1,25 @@
+# Declared checks the sequencer runs after the stages and before the finisher opens the PR.
+# A failed check stops the run; nothing is pushed.
+checks:
+  - id: notes_count
+    rule: number of new files under wiki/candidates/ <= slots.max_notes
+  - id: contract
+    rule: every new note's frontmatter validates against library/contracts/ct.foundry.candidate@1.schema.json
+  - id: base_positive
+    rule: every note has score_base > 0
+  - id: saturation_gate
+    rule: every note with saturation_band == unproven has score_demand >= 2
+  - id: exclusions
+    rule: no note names a login-walled, non-English, private-data or named-client site
+  - id: fetch_recorded
+    rule: every note's Plain-fetch section lists three URLs with HTTP status, data-present, challenge and IP class
+  - id: terms_quoted
+    rule: every note's Terms section has a quoted line, URL and read date
+  - id: evidence_dated
+    rule: every demand signal has a URL and a read date
+  - id: your_changes_empty
+    rule: the "Your changes" section contains no text
+  - id: write_paths
+    rule: the branch diff touches only wiki/candidates/**
+  - id: not_already_ruled
+    rule: no note's candidate slug appears in rulings-log.md within the last 90 days

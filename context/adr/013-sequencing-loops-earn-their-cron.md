@@ -1,6 +1,7 @@
 # 013 — Sequencing: loops earn their cron; one notifier; a status page
 Status: accepted — 2026-10-18, by the user (proposed the same day by the Kun pass on the architecture)
 Supersedes: the notifications clause and the weekly target cadence of 007; adds a sequencing
+Amended 2026-10-18: STATUS.md gains Apify's `notice` and the Monday summary lists the Console Monday reading (015); the routines are library workflows run by the interim sequencer (016).
 rule to 001 (end state unchanged) and a status surface to 005
 
 ## Context

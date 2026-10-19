@@ -1,6 +1,7 @@
 # 008 — Pricing events: one `result` event per complete row, the default start event, nothing else
 Status: accepted — 2026-10-18, by the user
 Amended 2026-10-18: charging per page with `min_complete_share` by 009 (`push_rows` replaces `push_row`).
+Amended 2026-10-18 (second): tiered discounts are deferred until the first paid run (015); the README's cost example must equal the FREE-tier price, checked by lint and deploy (014).
 
 ## Context
 - Ruled: every actor is pay-per-event with limited permissions, charged through

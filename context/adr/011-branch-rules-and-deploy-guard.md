@@ -1,6 +1,7 @@
 # 011 — Branch rules and the deploy guard: only the user's push deploys
 Status: accepted — 2026-10-18, by the user (proposed the same day by the Kun pass on the architecture)
 Supersedes: the "no required-PR rule" consequence of 004; the "commit to `main`" clause of 007
+Amended 2026-10-18: agent-made commits carry the OS trailers `Model:`, `Brief:`, `Tokens:`, `Session:`, `Approval:` in place of `Agent:`/`Run:` (016).
 
 ## Context
 - `deploy.yml` is the only caller of `apify push` and fires on any push to `main` under

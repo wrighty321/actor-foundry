@@ -1,0 +1,31 @@
+# Slot bank for wf.foundry.target-research. The sequencer binds every slot at run start and
+# refuses to run with a required slot empty. Prompts are shown only when a human must fill one.
+slots:
+  snapshot_path:
+    required: true
+    default: latest                       # resolved to the newest wiki/evidence/snapshots/*.json
+    prompt: Which Store snapshot should this run read?
+  store_gaps_path:
+    required: true
+    default: wiki/synthesis/store-gaps.md
+    prompt: Where is the ranked Store-gaps table?
+  rulings_log_path:
+    required: true
+    default: wiki/candidates/rulings-log.md
+    prompt: Where is the rulings log, so ruled candidates are not re-proposed?
+  exclusions_path:
+    required: true
+    default: wiki/playbook/candidate-card.md
+    prompt: Where are the exclusions and the scoring rubric?
+  max_notes:
+    required: false
+    default: 2
+    prompt: How many candidate notes at most this run?
+  focus:
+    required: false
+    default: null
+    prompt: Any site, data kind or category to focus on this run? (optional)
+  run_origin:
+    required: true
+    default: on-demand                    # on-demand | weekly
+    prompt: Is this an on-demand run or the weekly loop?

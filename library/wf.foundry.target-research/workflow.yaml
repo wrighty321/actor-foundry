@@ -1,0 +1,54 @@
+# wf.foundry.target-research — find, score and write candidate notes for actors the Store
+# underserves. Ending: one pull request. ADR 007, 011, 013, 016; playbook: candidate-card.md.
+id: wf.foundry.target-research
+version: 1
+class: research
+purpose: >
+  From the wiki's Store-side gaps and demand found outside the Store, write at most max_notes
+  candidate notes that validate against ct.foundry.candidate@1, scored demand-first, and open
+  a pull request the user merges to land them.
+trust: ask                    # every run ends in a PR the user merges; no standing approval
+loop: opt-in                  # on demand until actor #1 is approved (ADR 013); then weekly, cap 5
+slots: template.yaml
+needs: [repo, web-reads]
+endings: [pull-request]
+bounds:
+  max_notes: 2
+  max_runtime_min: 45
+  max_tokens_total: 400000
+  max_web_reads: 60
+write_paths: [wiki/candidates/**]        # from .os/project.yaml agent_write_paths
+stages:
+  - id: read
+    kind: agent
+    agent: agents/reader.md
+    input: slots
+    output: ct.foundry.gap-shortlist@1
+    model: {reasoning: medium, context: large, tools: [read-repo], data_class: public, speed: normal}
+    escalate:
+      empty_store_gaps: card            # "no Store-side gaps this run; run the pull first" — stop
+  - id: scout
+    kind: agent
+    agent: agents/scout.md
+    input: ct.foundry.gap-shortlist@1
+    output: ct.foundry.demand-evidence@1
+    model: {reasoning: high, context: large, tools: [web-read, store-api], data_class: public, speed: normal}
+    escalate:
+      no_demand_for_any_gap: card       # "nothing with Base > 0 this run" — stop, nothing written
+  - id: write
+    kind: agent
+    agent: agents/writer.md
+    input: [ct.foundry.gap-shortlist@1, ct.foundry.demand-evidence@1]
+    output: ct.foundry.candidate@1      # one document per note; each validated before the finisher
+    model: {reasoning: medium, context: medium, tools: [read-repo, write-branch], data_class: public, speed: normal}
+    escalate:
+      exclusion_ambiguous: card         # a site whose data class cannot be named — the user rules
+  - id: finish
+    kind: agent
+    agent: agents/finisher.md
+    input: ct.foundry.candidate@1
+    output: pull-request
+    model: {reasoning: low, context: small, tools: [git, gh], data_class: public, speed: fast}
+checks: checks.yaml
+lens: lens.md
+tests: tests/

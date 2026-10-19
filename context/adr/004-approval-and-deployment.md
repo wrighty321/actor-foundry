@@ -1,6 +1,7 @@
 # 004 — Approval and deployment: merging the pull request is the ruling; deploy runs on merge
 Status: accepted — 2026-10-18, by the user
 Amended 2026-10-18: the un-pause gate by 010; the "no required-PR rule" consequence by 011; the `listing-change` check now requires a `decisions.md` line carrying `#<PR number>` (architecture.md).
+Amended 2026-10-18 (quality-score pass): `foundry lint` joins the PR CI job and the deploy step (014); the publish runbook names the Console steps the deploy only reads back (015).
 
 ## Context
 - Ruled 2026-10-18: a maintainer repair that passes the fixture is deployed only on the user's

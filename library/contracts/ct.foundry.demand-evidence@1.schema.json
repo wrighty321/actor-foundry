@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ct.foundry.demand-evidence@1.schema.json",
+  "title": "Demand evidence — scout to writer, wf.foundry.target-research. Every signal carries a URL and a read date; fetched text appears only as quotation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["gaps"],
+  "properties": {
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["site", "excluded", "demand", "growth", "fetch", "terms", "data_class"],
+        "properties": {
+          "site": { "type": "string", "pattern": "^https://" },
+          "excluded": { "type": ["string", "null"], "enum": ["login-wall", "non-english", "private-data", "named-client", null] },
+          "demand": { "type": "array", "items": { "$ref": "#/definitions/signal" } },
+          "growth": { "type": "array", "items": { "$ref": "#/definitions/signal" } },
+          "fetch": {
+            "type": "array", "minItems": 0, "maxItems": 3,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["url", "http_status", "data_present", "challenge", "ip_class", "date"],
+              "properties": {
+                "url": { "type": "string" }, "http_status": { "type": "integer" },
+                "data_present": { "type": "boolean" }, "challenge": { "type": ["string", "null"] },
+                "ip_class": { "enum": ["datacenter", "residential", "unknown"] },
+                "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+              }
+            }
+          },
+          "terms": {
+            "type": ["object", "null"], "additionalProperties": false,
+            "required": ["quote", "url", "date", "forbids_automation"],
+            "properties": {
+              "quote": { "type": "string", "maxLength": 600 }, "url": { "type": "string" },
+              "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }, "forbids_automation": { "type": "boolean" }
+            }
+          },
+          "data_class": {
+            "type": "array",
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["field", "class", "lawful_basis"],
+              "properties": {
+                "field": { "type": "string" },
+                "class": { "enum": ["non-personal", "public-professional", "unclear"] },
+                "lawful_basis": { "type": ["string", "null"], "maxLength": 300 }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "signal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "url", "date", "kind"],
+      "properties": {
+        "text": { "type": "string", "maxLength": 400 },
+        "url": { "type": "string", "pattern": "^https?://" },
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "kind": { "enum": ["forum-ask", "github-scraper", "paid-listing", "hand-copied-data", "launch", "rank-rise", "incumbent-issues"] }
+      }
+    }
+  }
+}
